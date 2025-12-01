@@ -2,7 +2,6 @@ import { FunctionComponent } from "react";
 
 import Category from "../../types/category.type";
 
-import "./category-item.styles.scss";
 import { CategoryItemContainer, CategoryName } from "./category-item.style";
 
 interface CategoryItemProps {
