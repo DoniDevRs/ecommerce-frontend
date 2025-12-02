@@ -12,9 +12,14 @@ import { LoginContainer, LoginHeadline, LoginInputContainer, LoginSubtitle, Logi
 import CustomInput from "../../custom-input/custom-input.component";
 import InputErrorMessage from "../../input-error-message/input-error-message.component";
 
+interface LoginForm {
+    email: string;
+    password: string;
+}
+
 const LoginPage = () => {
     const { register,
-            formState: { errors }, handleSubmit } = useForm();
+            formState: { errors }, handleSubmit } = useForm<LoginForm>();
 
     const handleSubmitPress = (data: any) => {
         console.log(data);
