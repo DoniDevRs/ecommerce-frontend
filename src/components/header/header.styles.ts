@@ -33,4 +33,8 @@ export const HeaderItem = styled.div`
         margin-left: 40px;
     }
 
+    &:hover {
+        cursor: pointer;   
+    }   
+
 `
