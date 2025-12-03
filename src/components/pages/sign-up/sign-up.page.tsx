@@ -1,14 +1,22 @@
-import CustomButton from "../../custom-button/custom-button.component";
-import CustomInput from "../../custom-input/custom-input.component";
-import Header from "../../header/header.component";
-import { SignUpContainer, SignUpContent, SignUpHeadLine, SignUpInputContainer } from "./sign-up.styles";
 import { FiLogIn} from "react-icons/fi";
 import { useForm } from "react-hook-form";
 import validator from "validator";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { addDoc, collection } from "firebase/firestore";
+
+//Components
+import CustomButton from "../../custom-button/custom-button.component";
+import CustomInput from "../../custom-input/custom-input.component";
+import Header from "../../header/header.component";
 import InputErrorMessage from "../../input-error-message/input-error-message.component";
 
+import { SignUpContainer, SignUpContent, SignUpHeadLine, SignUpInputContainer } from "./sign-up.styles";
+
+//Utilities
+import { auth, db } from "../../../config/firebase.config";
+
 interface SignUpForm {
-    name: string;
+    firstName: string;
     lastName: string;
     email: string;
     password: string;
@@ -23,8 +31,20 @@ const SignUpPage = () => {
 
     const watchPassword = watch("password");        
 
-    const handleSubmitPress = (data: SignUpForm) => {
-        console.log(data);
+    const handleSubmitPress = async (data: SignUpForm) => {
+        try {
+          const userCredentials =await createUserWithEmailAndPassword(auth, data.email, data.password)
+
+          await addDoc(collection(db, 'users'), {
+            id: userCredentials.user.uid,
+            firstName: data.firstName,
+            lastName: data.lastName,
+            email: userCredentials.user.email,
+          });
+
+        } catch (error) {
+            console.error("Erro ao criar conta:", error);
+        }
     }        
 
     return (
@@ -37,13 +57,13 @@ const SignUpPage = () => {
             <SignUpInputContainer>
               <p>Nome</p>
               <CustomInput
-                hasError={!!errors?.name}
+                hasError={!!errors?.firstName}
                 type="text"
                 placeholder="Digite seu nome"
-                {...register("name", { required: true })}
+                {...register("firstName", { required: true })}
               />
 
-              {errors?.name?.type === "required" && 
+              {errors?.firstName?.type === "required" && 
               (<InputErrorMessage>Nome é obrigatório</InputErrorMessage>)}
 
             </SignUpInputContainer>
