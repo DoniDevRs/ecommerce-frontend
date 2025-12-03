@@ -4,6 +4,8 @@ import { useForm } from "react-hook-form";
 import validator from "validator";
 import { getDocs, collection, query, where, addDoc } from "firebase/firestore";
 import { AuthError, AuthErrorCodes, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import { useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 
 // Components
 import CustomButton from "../../custom-button/custom-button.component";
@@ -16,6 +18,7 @@ import InputErrorMessage from "../../input-error-message/input-error-message.com
 
 //Utilities
 import { auth, db, googleProvider } from "../../../config/firebase.config";
+import { UserContext } from "../../../contexts/user.context";
 interface LoginForm {
     email: string;
     password: string;
@@ -23,7 +26,19 @@ interface LoginForm {
 
 const LoginPage = () => {
     const { register,
-            formState: { errors }, handleSubmit, setError } = useForm<LoginForm>();
+            formState: { errors }, 
+            handleSubmit, 
+            setError } = useForm<LoginForm>();
+
+    const { isAuthenticated } = useContext(UserContext);  
+
+    const navigate = useNavigate();
+    
+    useEffect(() => {
+      if (isAuthenticated) {
+        navigate("/");
+      }
+    }, [isAuthenticated, navigate]);
 
     const handleSubmitPress = async (data: LoginForm) => {
         try {
