@@ -12,6 +12,7 @@ import SignUpPage from "./components/pages/sign-up/sign-up.page";
 import { auth, db } from "./config/firebase.config";
 import { UserContext } from "./contexts/user.context";
 import { userConverter } from "./converters/firestore.converter";
+import LoadingComponent from "./components/loading/loading.component";
 
 const App: FunctionComponent = () => {
 
@@ -41,7 +42,7 @@ const App: FunctionComponent = () => {
       );
 
       const userFromFirestore = querySnapshot.docs[0]?.data();
-      
+
       loginUser(userFromFirestore);
 
       return setIsInitializing(false);
@@ -50,7 +51,7 @@ const App: FunctionComponent = () => {
     return setIsInitializing(false);
   });
 
-  if (isInitializing) return null;
+  if (isInitializing) return <LoadingComponent />;
 
   return (
     <BrowserRouter>
