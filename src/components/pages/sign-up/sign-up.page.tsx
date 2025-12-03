@@ -41,6 +41,7 @@ const SignUpPage = () => {
             firstName: data.firstName,
             lastName: data.lastName,
             email: userCredentials.user.email,
+            provider: 'firebase',
           });
 
         } catch (error) {
