@@ -1,7 +1,7 @@
 import { FiLogIn} from "react-icons/fi";
 import { useForm } from "react-hook-form";
 import validator from "validator";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { AuthError, createUserWithEmailAndPassword, AuthErrorCodes } from "firebase/auth";
 import { addDoc, collection } from "firebase/firestore";
 
 //Components
@@ -27,13 +27,14 @@ const SignUpPage = () => {
     const { register,
             formState: { errors }, 
             handleSubmit, 
+            setError,
             watch } = useForm<SignUpForm>();
 
     const watchPassword = watch("password");        
 
     const handleSubmitPress = async (data: SignUpForm) => {
         try {
-          const userCredentials =await createUserWithEmailAndPassword(auth, data.email, data.password)
+          const userCredentials = await createUserWithEmailAndPassword(auth, data.email, data.password)
 
           await addDoc(collection(db, 'users'), {
             id: userCredentials.user.uid,
@@ -43,7 +44,11 @@ const SignUpPage = () => {
           });
 
         } catch (error) {
-            console.error("Erro ao criar conta:", error);
+            const _error = error as AuthError
+
+            if (_error.code === AuthErrorCodes.EMAIL_EXISTS) {
+                return setError('email', { type: 'alreadyInUse' });
+            }
         }
     }        
 
@@ -98,6 +103,9 @@ const SignUpPage = () => {
                 {errors?.email?.type === "required" && 
                 (<InputErrorMessage>E-mail é obrigatório</InputErrorMessage>)}
 
+                {errors?.email?.type === "alreadyInUse" && 
+                (<InputErrorMessage>E-mail já está em uso</InputErrorMessage>)}
+
                 {errors?.email?.type === "validate" && 
                 (<InputErrorMessage>E-mail inválido</InputErrorMessage>)}
             </SignUpInputContainer>
@@ -108,11 +116,15 @@ const SignUpPage = () => {
                 hasError={!!errors?.password}
                 type="password"
                 placeholder="Digite sua senha"
-                {...register("password", { required: true })}
+                {...register("password", { required: true, minLength: 6 })}
               />
 
                 {errors?.password?.type === "required" && 
                 (<InputErrorMessage>Senha é obrigatória</InputErrorMessage>)}
+
+                {errors?.password?.type === "minLength" && 
+                (<InputErrorMessage>Senha deve ter no mínimo 6 caracteres</InputErrorMessage>)}  
+
             </SignUpInputContainer>
 
             <SignUpInputContainer>
@@ -121,7 +133,7 @@ const SignUpPage = () => {
                 hasError={!!errors?.passwordConfirmation}
                 type="password"
                 placeholder="Digite novamente sua senha"
-                {...register("passwordConfirmation", { required: true, validate: (value) => {
+                {...register("passwordConfirmation", { required: true, minLength: 6, validate: (value) => {
                     return value === watchPassword;
                 } })}
               />
@@ -131,6 +143,9 @@ const SignUpPage = () => {
 
                 {errors?.passwordConfirmation?.type === "validate" && 
                 (<InputErrorMessage>As senhas não coincidem</InputErrorMessage>)}    
+
+                {errors?.passwordConfirmation?.type === "minLength" && 
+                (<InputErrorMessage>A confirmação de senha deve ter no mínimo 6 caracteres</InputErrorMessage>)} 
 
             </SignUpInputContainer>
 
