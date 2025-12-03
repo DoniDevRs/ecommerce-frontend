@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import validator from "validator";
 import { getDocs, collection, query, where, addDoc } from "firebase/firestore";
 import { AuthError, AuthErrorCodes, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
-import { useEffect, useContext } from "react";
+import { useEffect, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 // Components
@@ -19,6 +19,7 @@ import InputErrorMessage from "../../input-error-message/input-error-message.com
 //Utilities
 import { auth, db, googleProvider } from "../../../config/firebase.config";
 import { UserContext } from "../../../contexts/user.context";
+import LoadingComponent from "../../loading/loading.component";
 interface LoginForm {
     email: string;
     password: string;
@@ -29,6 +30,8 @@ const LoginPage = () => {
             formState: { errors }, 
             handleSubmit, 
             setError } = useForm<LoginForm>();
+
+    const [isLoading, setIsLoading] = useState(false);        
 
     const { isAuthenticated } = useContext(UserContext);  
 
@@ -42,6 +45,8 @@ const LoginPage = () => {
 
     const handleSubmitPress = async (data: LoginForm) => {
         try {
+          setIsLoading(true);
+
           const userCredentials = await signInWithEmailAndPassword(auth, data.email, data.password)
           console.log(userCredentials);
 
@@ -55,12 +60,15 @@ const LoginPage = () => {
           if (_error.code === AuthErrorCodes.USER_DELETED) {
             return setError('email', { type: 'notFound' });
           }
-
+        } finally {
+          setIsLoading(false);
         }
     }    
     
     const handleSignInWithGooglePress = async () => {
       try {
+        setIsLoading(true);
+
         const userCredentials = await signInWithPopup(auth, googleProvider);
 
         const querySnapshot = await getDocs(
@@ -86,12 +94,16 @@ const LoginPage = () => {
         }
       } catch (error) {
         console.log(error); 
+      } finally {
+        setIsLoading(false);
       }
     };
 
     return (
       <>
         <Header />
+
+        {isLoading && <LoadingComponent />}
 
         <LoginContainer>
           <LoginContent>
