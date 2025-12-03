@@ -78,7 +78,7 @@ const SignUpPage = () => {
         <Header />
 
         {isLoading && <LoadingComponent />}
-        
+         
         <SignUpContainer>
           <SignUpContent>
             <SignUpHeadLine>Crie sua conta</SignUpHeadLine>
