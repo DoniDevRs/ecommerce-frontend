@@ -24,7 +24,7 @@ const Categories = () => {
                <div key={category.id}>
                  <CategoryItem category={category} />
                </div>
-            )}
+            )} 
             </CategoriesContent>
 
         </CategoriesContainer>
