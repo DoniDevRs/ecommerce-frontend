@@ -7,31 +7,33 @@ interface CartContainerProps {
 
 export const CartContainer = styled.div<CartContainerProps>`
     position: fixed;
-    height: 100vh;
-    width: 100vh;
-    right: 0;
-    bottom: 0;
     top: 0;
     left: 0;
-    background-color: rgba(0, 0, 0, 0.7);
+    width: 100vw;
+    height: 100vh;
     display: flex;
     justify-content: flex-end;
+    align-items: stretch;
+    background-color: rgba(0, 0, 0, 0.7);
     visibility: ${(props) => (props.isVisible ? "visible" : "hidden")};
     opacity: ${(props) => (props.isVisible ? 1 : 0)};
     transition: all 0.3s ease;
 `;
 
 export const CartEscapeArea = styled.div`
-    width: 100%;
+    flex: 1;
+    cursor: pointer;
 `;
 
 export const CartContent = styled.div`
-    height: 100px;
+    height: 100vh;
     min-width: 500px;
+    max-width: 500px;
     z-index: 200;
     background-color: white;
     padding: 20px;
-    overflow-y: scroll;
+    overflow-y: auto;
+    box-shadow: -2px 0 8px rgba(0,0,0,0.15);
 `;
 
 export const CartTitle = styled.p`
