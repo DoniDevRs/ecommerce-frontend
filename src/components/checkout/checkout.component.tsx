@@ -11,9 +11,21 @@ import {
   CheckoutProducts,
   CheckoutTotal
 } from './checkout.styles'
+import axios from 'axios'
 
 const Checkout: FunctionComponent = () => {
   const { products, productsTotalPrice } = useContext(CartContext)
+
+  const handleFinishPurchaseClick = async () => { 
+    try {
+        const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/create-checkout-session`, { products: products });
+        console.log("Compra finalizada com sucesso:", data.url);
+
+    } catch (error) {
+      console.error("Erro ao finalizar a compra:", error);
+    }
+
+  }
 
   return (
     <CheckoutContainer>
@@ -29,7 +41,8 @@ const Checkout: FunctionComponent = () => {
 
           <CheckoutTotal>Total: R${productsTotalPrice}</CheckoutTotal>
 
-          <CustomButton startIcon={<BsBagCheck />}>
+          <CustomButton startIcon={<BsBagCheck />} 
+            onClick={handleFinishPurchaseClick}>
             Finalizar Compra
           </CustomButton>
         </>
