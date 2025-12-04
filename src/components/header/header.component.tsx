@@ -9,11 +9,13 @@ import { UserContext } from '../../contexts/user.context';
 
 // Styles
 import { HeaderContainer, HeaderItems, HeaderItem, HeaderTitle } from './header.styles';
+import { CartContext } from '../../contexts/cart.context';
 
 const Header = () => {
   const navigate = useNavigate();
 
   const { isAuthenticated } = useContext(UserContext);
+  const { toogleCart } = useContext(CartContext);
 
   const handleLogoClick = () => {
     navigate("/");
@@ -49,7 +51,7 @@ const Header = () => {
             <HeaderItem onClick={() => signOut(auth)}>Sair</HeaderItem>
           )
             }
-          <HeaderItem>
+          <HeaderItem onClick={toogleCart}>
             <BsCart3 size={25} />
             <p style={ { marginLeft: 5 } }> 5</p>
           </HeaderItem>
