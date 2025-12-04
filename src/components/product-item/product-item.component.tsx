@@ -1,39 +1,46 @@
-import { FunctionComponent, useContext } from "react"
-import { BsCartPlus } from "react-icons/bs"
+import { FunctionComponent, useContext } from 'react'
+import { BsCartPlus } from 'react-icons/bs'
 
-import { ProductContainer, ProductImage, ProductInfo } from "./product-item.styles"
+// Components
+import CustomButton from '../custom-button/custom-button.component'
 
-import Product from "../../types/product.types"
-import CustomButton from "../custom-button/custom-button.component"
-import { CartContext } from "../../contexts/cart.context"
+// Styles
+import {
+  ProductContainer,
+  ProductImage,
+  ProductInfo
+} from './product-item.styles'
+
+// Utilities
+import Product from '../../types/product.types'
+import { CartContext } from '../../contexts/cart.context'
 
 interface ProductItemProps {
-    product: Product
-
+  product: Product
 }
 
-const ProductItem: FunctionComponent<ProductItemProps> = ( {product}) => { 
-    const { addProductToCart } = useContext(CartContext);
+const ProductItem: FunctionComponent<ProductItemProps> = ({ product }) => {
+  const { addProductToCart, toggleCart } = useContext(CartContext)
 
-    const handleAddToCartClick = () => {
-        addProductToCart(product);
-    }
+  const handleAddToCartClick = () => {
+    addProductToCart(product)
+    toggleCart()
+  }
 
-    return (
-        <ProductContainer>
-            <ProductImage imageUrl={product.imageUrl}>
-                <CustomButton startIcon={<BsCartPlus />} 
-                onClick={handleAddToCartClick}>
-                    Adicionar ao carrinho
-              </CustomButton>
-            </ProductImage>
-            <ProductInfo>
-                <p>{product.name}</p>
-                <p>R${product.price}</p>
-            </ProductInfo>
-        </ProductContainer>
-    )
+  return (
+    <ProductContainer>
+      <ProductImage imageUrl={product.imageUrl}>
+        <CustomButton startIcon={<BsCartPlus />} onClick={handleAddToCartClick}>
+          Adicionar ao carrinho
+        </CustomButton>
+      </ProductImage>
 
+      <ProductInfo>
+        <p>{product.name}</p>
+        <p>R${product.price}</p>
+      </ProductInfo>
+    </ProductContainer>
+  )
 }
 
-export default ProductItem;
+export default ProductItem

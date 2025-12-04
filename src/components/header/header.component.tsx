@@ -15,7 +15,7 @@ const Header = () => {
   const navigate = useNavigate();
 
   const { isAuthenticated } = useContext(UserContext);
-  const { toogleCart } = useContext(CartContext);
+  const { toggleCart } = useContext(CartContext);
 
   const handleLogoClick = () => {
     navigate("/");
@@ -51,7 +51,7 @@ const Header = () => {
             <HeaderItem onClick={() => signOut(auth)}>Sair</HeaderItem>
           )
             }
-          <HeaderItem onClick={toogleCart}>
+          <HeaderItem onClick={toggleCart}>
             <BsCart3 size={25} />
             <p style={ { marginLeft: 5 } }> 5</p>
           </HeaderItem>

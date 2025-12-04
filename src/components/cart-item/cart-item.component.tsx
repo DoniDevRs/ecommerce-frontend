@@ -1,30 +1,43 @@
-import { FunctionComponent } from "react";
-import { AiOutlinePlus, AiOutlineMinus, AiOutlineClose } from "react-icons/ai";
+import { FunctionComponent } from 'react'
+import { AiOutlinePlus, AiOutlineMinus, AiOutlineClose } from 'react-icons/ai'
 
-import { CartItemContainer, CartItemImage, CartItemInfo, CartItemQuantity, RemoveButton } from "./cart-item.styles";
-import CartProduct from "../../types/cart.type";
+// Utilities
+import CartProduct from '../../types/cart.type'
+
+// Styles
+import {
+  CartItemContainer,
+  CartItemImage,
+  CartItemInfo,
+  CartItemQuantity,
+  RemoveButton
+} from './cart-item.styles'
 
 interface CartItemProps {
-    product: CartProduct
+  product: CartProduct
 }
 
 const CartItem: FunctionComponent<CartItemProps> = ({ product }) => {
-    return (
-        <CartItemContainer> 
-            <CartItemImage imageUrl={product.imageUrl} />
-            <CartItemInfo>
-                <p>{product.name}</p>
-                <p>R${product.price}</p>
-            </CartItemInfo>
-            <CartItemQuantity>
-                <><AiOutlineMinus size={20} /><p>{product.quantity}</p><AiOutlinePlus size={20} /></>
-            </CartItemQuantity>
-            <RemoveButton>
-                <AiOutlineClose size={25} /> Remover
-            </RemoveButton>    
+  return (
+    <CartItemContainer>
+      <CartItemImage imageUrl={product.imageUrl} />
 
-        </CartItemContainer>
-    )
+      <CartItemInfo>
+        <p>{product.name}</p>
+        <p>R${product.price}</p>
+
+        <CartItemQuantity>
+          <AiOutlineMinus size={20} />
+          <p>{product.quantity}</p>
+          <AiOutlinePlus size={20} />
+        </CartItemQuantity>
+      </CartItemInfo>
+
+      <RemoveButton>
+        <AiOutlineClose size={25} />
+      </RemoveButton>
+    </CartItemContainer>
+  )
 }
 
-export default CartItem;    
+export default CartItem 
