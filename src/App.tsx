@@ -16,6 +16,7 @@ import { userConverter } from "./converters/firestore.converter";
 
 // Components
 import LoadingComponent from "./components/loading/loading.component";
+import CategoryDetailsPage from "./components/pages/category-details/category-details.page";
 
 const App: FunctionComponent = () => {
 
@@ -61,6 +62,7 @@ const App: FunctionComponent = () => {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/explore" element={<ExplorePage />} />
+        <Route path="/category/:id" element={<CategoryDetailsPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/sign-up" element={<SignUpPage />} />
       </Routes>
