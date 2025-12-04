@@ -10,4 +10,15 @@ export const LoadingContainer = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
+    align-items: center;
+
+    p {
+        color: white;
+        font-weight: 500;
+        margin-bottom: 25px;
+        font-size: 1.325rem;
+        max-width: 50%;
+        text-align: center;
+    }
 `;
