@@ -20,6 +20,7 @@ import CategoryDetailsPage from "./components/pages/category-details/category-de
 import Cart from "./components/cart/cart.component";
 import AuthenticationGuard from "./components/guards/authentication.guard";
 import CheckoutPage from "./components/pages/checkout/checkout.page";
+import PaymentConfirmationPage from "./components/pages/payment-confirmation/payment-confirmation-page";
 
 const App: FunctionComponent = () => {
 
@@ -74,6 +75,7 @@ const App: FunctionComponent = () => {
             </AuthenticationGuard>
           }
         />
+        <Route path='/payment-confirmation' element={<PaymentConfirmationPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/sign-up" element={<SignUpPage />} />
       </Routes>
