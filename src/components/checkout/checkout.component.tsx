@@ -1,4 +1,4 @@
-import { FunctionComponent, useContext } from 'react'
+import { FunctionComponent, useContext, useState } from 'react'
 import { BsBagCheck } from 'react-icons/bs'
 
 import { CartContext } from '../../contexts/cart.context'
@@ -12,22 +12,33 @@ import {
   CheckoutTotal
 } from './checkout.styles'
 import axios from 'axios'
+import LoadingComponent from '../loading/loading.component'
 
 const Checkout: FunctionComponent = () => {
   const { products, productsTotalPrice } = useContext(CartContext)
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleFinishPurchaseClick = async () => { 
     try {
-        const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/create-checkout-session`, { products: products });
+        setIsLoading(true);
+        const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/create-checkout-session`, { products });
         console.log("Compra finalizada com sucesso:", data.url);
+
+        window.location.href = data.url;
 
     } catch (error) {
       console.error("Erro ao finalizar a compra:", error);
+    } finally {
+      setIsLoading(false);
     }
 
   }
 
   return (
+    <>
+     {isLoading && <LoadingComponent />}
+
     <CheckoutContainer>
       <CheckoutTitle>Checkout</CheckoutTitle>
 
@@ -50,6 +61,7 @@ const Checkout: FunctionComponent = () => {
         <p>Seu carrinho está vazio!</p>
       )}
     </CheckoutContainer>
+    </>
   )
 }
 

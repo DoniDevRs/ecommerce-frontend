@@ -12,6 +12,7 @@ export const LoadingContainer = styled.div`
     align-items: center;
     flex-direction: column;
     align-items: center;
+    z-index: 100;
 
     p {
         color: white;
